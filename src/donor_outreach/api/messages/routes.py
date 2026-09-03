@@ -8,7 +8,10 @@ messages_bp = Blueprint("messages", __name__)
 
 @messages_bp.get("/campaigns/<int:campaign_id>/messages")
 def get_messages(campaign_id: int):
-    return list_envelope(store.list_messages(campaign_id))
+    direction = request.args.get("direction")
+    language = request.args.get("language")
+    sort = request.args.get("sort", "asc")
+    return list_envelope(store.list_messages(campaign_id, direction=direction, language=language, sort=sort))
 
 
 @messages_bp.get("/messages/<int:message_id>")

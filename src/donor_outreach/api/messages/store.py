@@ -6,9 +6,30 @@ from donor_outreach.clients.translate import TranslateClient
 from donor_outreach.clients.comprehend import ComprehendClient
 from botocore.exceptions import ClientError
 from donor_outreach.errors import NotFoundError
+from sqlalchemy import or_
 
-def list_messages(campaign_id: int) -> list[MessageRead]:
-    stmt = select(Message).where(Message.campaign_id == campaign_id).order_by(Message.id)
+
+def list_messages(
+    campaign_id: int,
+    direction: str | None = None,
+    language: str | None = None,
+    sort: str = "asc",
+) -> list[MessageRead]:
+    stmt = select(Message).where(Message.campaign_id == campaign_id)
+
+    if direction is not None:
+        stmt = stmt.where(Message.direction == direction)
+
+    if language is not None:
+        stmt = stmt.where(
+            or_(Message.original_language == language, Message.target_language == language)
+        )
+
+    if sort == "desc":
+        stmt = stmt.order_by(Message.created_at.desc())
+    else:
+        stmt = stmt.order_by(Message.created_at.asc())
+
     rows = db.session.execute(stmt)
     return [MessageRead.model_validate(row[0]) for row in rows]
 
@@ -108,8 +129,34 @@ def update_message(message_id: int, message: dict) -> MessageRead:
     for field, value in updates.items():
         setattr(record, field, value)
 
-    db.session.commit()
+    # Re-trigger translation since original_text changed.
+    if "original_text" in updates:
+        campaign = record.campaign
+        if record.direction == MessageDirection.OUTBOUND:
+            source_lang, target_lang = campaign.def_lang, record.target_language
+        else:
+            comprehend = ComprehendClient()
+            try:
+                detected_language, confidence = comprehend.detect_language(record.original_text)
+                if confidence < CONFIDENCE_THRESHOLD:
+                    detected_language = campaign.def_lang
+            except ClientError:
+                detected_language = campaign.def_lang
+            record.original_language = detected_language
+            source_lang, target_lang = detected_language, campaign.def_lang
 
+        if source_lang == target_lang:
+            record.translated_text = record.original_text
+        else:
+            translator = TranslateClient()
+            try:
+                record.translated_text = translator.translate_text(
+                    text=record.original_text, src_lang=source_lang, trg_lang=target_lang
+                )
+            except ClientError:
+                record.translated_text = None
+
+    db.session.commit()
     return MessageRead.model_validate(record)
 
 def delete_message(message_id: int) -> None:

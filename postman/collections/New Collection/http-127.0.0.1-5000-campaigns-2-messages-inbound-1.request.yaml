@@ -1,0 +1,13 @@
+$kind: http-request
+name: http://127.0.0.1:5000/campaigns/2/messages/inbound
+description: ""
+url: http://127.0.0.1:5000/campaigns/2/messages/inbound
+method: POST
+body:
+  type: json
+  content: |-
+    {
+        "donor_name": "Maria Lopez",
+        "original_text": "Gracias por su mensaje!"
+    }
+order: 4439802390636500
