@@ -1,0 +1,14 @@
+$kind: http-request
+name: http://127.0.0.1:5000/campaigns/2/messages/outbound
+description: ""
+url: http://127.0.0.1:5000/campaigns/2/messages/outbound
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+        "donor_name": "Carlos Mendez",
+        "original_text": "Thank you so much for your generous donation this year.",
+        "target_language": "es"
+    }
+order: 3623739444453220
