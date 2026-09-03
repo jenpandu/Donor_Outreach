@@ -1,0 +1,6 @@
+$kind: http-request
+name: http://127.0.0.1:5000/messages/2
+description: ""
+url: http://127.0.0.1:5000/messages/2
+method: DELETE
+order: 3122304600136715

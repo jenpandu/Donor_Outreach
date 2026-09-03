@@ -1,0 +1,6 @@
+$kind: http-request
+name: http://127.0.0.1:5000/api/campaigns/1
+description: ""
+url: http://127.0.0.1:5000/api/campaigns/1
+method: DELETE
+order: 1788292582186

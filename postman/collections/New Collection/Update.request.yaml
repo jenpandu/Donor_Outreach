@@ -1,0 +1,12 @@
+$kind: http-request
+name: Update
+description: ""
+url: http://127.0.0.1:5000/messages/1
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+        "original_text": "Corrected message text."
+    }
+order: 2494896157401004

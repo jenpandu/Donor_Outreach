@@ -1,0 +1,13 @@
+$kind: http-request
+name: http://127.0.0.1:5000/campaigns/2/messages/inbound
+description: ""
+url: http://127.0.0.1:5000/campaigns/2/messages/inbound
+method: POST
+body:
+  type: json
+  content: |-
+    {
+        "donor_name": "Carlos Mendez",
+        "original_text": "Muchas gracias por su generosidad este año, significa mucho para nuestra familia."
+    }
+order: 3553776461463919
