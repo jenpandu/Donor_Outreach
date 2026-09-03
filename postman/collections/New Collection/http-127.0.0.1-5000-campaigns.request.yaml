@@ -1,0 +1,15 @@
+$kind: http-request
+name: http://127.0.0.1:5000/campaigns
+description: ""
+url: http://127.0.0.1:5000/campaigns
+method: POST
+body:
+  type: json
+  content: |-
+    {
+        "name": "Fall Gala 2027",
+        "goal_amt": 12000,
+        "description": "Annual fall fundraising gala supporting community outreach programs.",
+        "def_lang": "en"
+    }
+order: 4472353004378212

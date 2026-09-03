@@ -1,0 +1,13 @@
+$kind: http-request
+name: " http://127.0.0.1:5000/api/campaigns/2"
+description: ""
+url: " http://127.0.0.1:5000/api/campaigns/2"
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+        "name": "Winter Relief 2026", 
+        "goal_amt": 7500
+    }
+order: 4208517900887877

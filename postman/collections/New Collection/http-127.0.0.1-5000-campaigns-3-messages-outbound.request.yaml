@@ -1,0 +1,19 @@
+$kind: http-request
+name: http://127.0.0.1:5000/campaigns/3/messages/outbound
+description: ""
+url: http://127.0.0.1:5000/campaigns/3/messages/outbound
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "id": 42,
+      "campaign_id": 7,
+      "direction": "outbound",
+      "donor_name": "Maria Lopez",
+      "original_text": "Gracias!",
+      "detected_language": "es",
+      "translated_text": "Thank you!",
+      "created_at": "2026-08-30T14:22:00Z"
+    }
+order: 4486042071540238
